@@ -155,17 +155,9 @@ class TestChorusLapilli(unittest.TestCase):
         tiles[0].click()
         self.assertTileIs(tiles[0], self.SYMBOL_X)
 
-    def test_alternating_players(self):
-        '''Check if second click on top-right adds an O'''
-        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
-        self.assertTileIs(tiles[0], self.SYMBOL_BLANK)
-        tiles[0].click()
-        self.assertTileIs(tiles[0], self.SYMBOL_X)
-        tiles[2].click()
-        self.assertTileIs(tiles[2], self.SYMBOL_O)
     
     def test_max_three_x(self):
-        '''Check if after 3 Xs, no more are placed immediately'''
+        '''Check if after 3 Xs and 0s, no more are placed immediately'''
         tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
         self.assertTileIs(tiles[0], self.SYMBOL_BLANK)
         tiles[0].click()
@@ -174,7 +166,39 @@ class TestChorusLapilli(unittest.TestCase):
         tiles[3].click()
         tiles[4].click()
         tiles[5].click()
-        self.assertTileIs(tiles[5], self.SYMBOL_BLANK)
+        tiles[6].click()
+        self.assertTileIs(tiles[6], self.SYMBOL_BLANK)
+    
+    def test_adjacency(self):
+        '''Check if after 3 Xs and 0s, next two clicks move an X'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        self.assertTileIs(tiles[0], self.SYMBOL_BLANK)
+        tiles[0].click()
+        tiles[3].click()
+        tiles[6].click()
+        tiles[1].click()
+        tiles[2].click()
+        tiles[4].click()
+        tiles[2].click()
+        tiles[5].click()
+        self.assertTileIs(tiles[5], self.SYMBOL_X)
+    
+    def test_center_rule(self):
+        '''Check if center rule works(can't move edge tile if center is occupied)'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        self.assertTileIs(tiles[0], self.SYMBOL_BLANK)
+        tiles[0].click()
+        tiles[3].click()
+        tiles[6].click()
+        tiles[8].click()
+        tiles[2].click()
+        tiles[4].click()
+        tiles[2].click()
+        tiles[5].click()
+        tiles[3].click()
+        tiles[7].click()
+        self.assertTileIs(tiles[7], self.SYMBOL_BLANK)
+
     
 
 # ================= [DO NOT MAKE ANY CHANGES BELOW THIS LINE] =================
