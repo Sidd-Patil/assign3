@@ -1,0 +1,5 @@
+Tic-Tac-Toe Tutorial:
+
+Created square component, which used a button for the square.
+When I attempted to add another button, it failed to do so, reason being that the multiple elements need to be enclosed within a fragment
+After enclosing, I made a 9 button grid to create the tic tac toe grid. However, this didn't function as expected initially, as it make 

@@ -3,6 +3,34 @@ import * as ReactBootstrap from 'react-bootstrap'
 
 const { Badge, Button, Card } = ReactBootstrap
 
+function Square() {
+  return <button className="square">1</button>;
+}
+
+export default function Board() {
+  return (
+    <>
+      <div className="board-row">
+        <Square />
+        <Square />
+        <Square />
+      </div>
+      <div className="board-row">
+        <Square />
+        <Square />
+        <Square />
+      </div>
+      <div className="board-row">
+        <Square />
+        <Square />
+        <Square />
+      </div>
+    </>
+  );
+}
+
+
+/*
 export default function App() {
   const [name, setName] = React.useState('World')
 
@@ -29,3 +57,4 @@ export default function App() {
     </div>
   )
 }
+*/
