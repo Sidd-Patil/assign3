@@ -35,7 +35,7 @@ function Board({ xIsNext, squares, onPlay, startSquare, setStartSquare }) {
             return;
           }
         } else {
-          if (squares[i] === null && Adjacent(startSquare, i)) {
+          if (squares[i] === null && Adjacency(startSquare, i) && CenterRule(squares, startSquare, i, player)) {
             const nextSquares = squares.slice();
             nextSquares[i] = player;
             nextSquares[startSquare] = null;
@@ -141,9 +141,33 @@ function calculateWinner(squares) {
   return null;
 }
 
-const adjacentSquares = { 0: [1, 3, 4], 1: [0, 2, 3, 4, 5], 2: [1, 4, 5], 3: [0, 1, 4, 6, 7], 4: [0, 1, 2, 3, 5, 6, 7, 8], 5: [1, 2, 4, 7, 8], 6: [3, 4, 7], 7: [3, 4, 5, 6, 8], 8: [4, 5, 7] };
 
-function Adjacent(square1, square2) {
-  const adjacent = adjacentSquares[square1].find(x => x === square2);
+
+function Adjacency(startSquare, endSquare) {
+  const adjacentSquares = [
+  [1, 3, 4],
+  [0, 2, 3, 4, 5],
+  [1, 4, 5],
+  [0, 1, 4, 6, 7],
+  [0, 1, 2, 3, 5, 6, 7, 8],
+  [1, 2, 4, 7, 8],
+  [3, 4, 7],
+  [3, 4, 5, 6, 8],
+  [4, 5, 7]
+  ];
+  const adjacent = adjacentSquares[startSquare].find(x => x === endSquare);
   return adjacent !== undefined;
+}
+
+function CenterRule(squares, startSquare, endSquare, player) {
+  if (squares[4] === null || squares[4] !== player || startSquare === 4) {
+    return true;
+  }
+  const possibleMove = squares.slice();
+  possibleMove[startSquare] = null;
+  possibleMove[endSquare] = player;
+  if (calculateWinner(possibleMove)) {
+    return true;
+  }
+  return false;
 }
