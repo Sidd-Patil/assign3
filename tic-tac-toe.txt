@@ -1,5 +1,10 @@
 Tic-Tac-Toe Tutorial:
 
-Created square component, which used a button for the square.
-When I attempted to add another button, it failed to do so, reason being that the multiple elements need to be enclosed within a fragment
-After enclosing, I made a 9 button grid to create the tic tac toe grid. However, this didn't function as expected initially, as it make 
+Created square component, which used a button for the square. When I attempted to add another button, it failed to do so, reason being that the multiple elements need to be enclosed within a fragment
+
+After enclosing, I made a 9 button grid to create the tic tac toe grid. However, this didn't function as expected initially, as it made a row of 9 rather than a 3x3. To fix this, I had to create 3 seperate <div> groups, each with three buttons. Then, to accurately reflect the name of the component to what is actually happening, I changed the component name from square to board. The use of div allowed the grid to display properly.
+
+To abstract the buttons(for readability), I created the square component(which was one button), then replaced the buttons in Board with the square component. In effect, this essentially did the same thing(3x3 board), just with 1s as the label for all instead of numbered. So, to make sure the numbering came back, I added a value prop, which allowed me to pass a value into the square component, allowing the board squares to be numbered 1-9.
+
+To make the squares change on click, I added a handleClick function that logs when called(via useState, to make sure the component remembered), and within the button itself I added the onClick with a callback to my handleClick function. This made it so that the console logged when the button was clicked. To then make it so that the actual displayed value changed(X when clicked), I modified my handleClick function 
+
