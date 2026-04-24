@@ -20,3 +20,7 @@ Then, I began implementing the time-travel function, and to do so, I had to chan
 
 To make sure the data from Game was passed into board, I created props for board and refactored the code to work for the props instead, and made the Game component deal wiht the main board-level state changes via handlePlay, as well as passed in all of the needed props for board from Game. After all of this, the all of the state data is moved into Game, but the actual program still looks the same on the user end(essentially just refactored the code, it functions the same).
 
+To be able to travel to different past states, I created a jumpTo function and a list of buttons(that increases the more moves have been made). Now, without the implementation of jumpTo, this pretty much does nothing, initially erroring because there was no key(fixed when I added a key using index, which was safe because the move order would never be jumbled). This jumpTo function is used in a arrow function of a list of buttons, each with a jumpTo corresponding to one of the saved states. 
+
+
+To mkae this function properly, I had to refactor the code(handlePlay function), and make sure currentSquares tracked the actual current move, not just the latest state. At this point on the user side, this code allowed me to jump to all of the different states of the game, but the move order was still tracking alternates rather than by state. So, I changed the xIsNext to track the state index(even states have to be X, odd are O), and this made the entire game function as intended. 
