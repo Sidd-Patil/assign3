@@ -1,0 +1,8 @@
+Chorus Lapilli Implementation:
+
+First thing I decided to tackle was the difference between traditional tic-tac-toe and this version, the switch between placing pieces and moving them(after both players have moved 3 times). I started by adding a function to board that finds the number of Xs and Os on the board, and returns handleClick early if that number for whichever one is up next exceeds 3(effectively stopping placement).
+
+Noticed a duplicate if statement call(using xIsNext twice to decide whether character was an X or O), so I refactored the rest of the function to prevent any duplicate if statements(if statement already needed to be called before for player). At this point, on the user side it looks as expected, where no more moves were possible after 3 X's were put down. 
+
+Then I started to tackle the moving portion, where the first click has to select and the second has to place it. 
+
