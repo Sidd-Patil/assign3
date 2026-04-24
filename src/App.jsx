@@ -10,22 +10,41 @@ function Square({ value, onSquareClick }) {
   );
 }
 
-function Board({ xIsNext, squares, onPlay }) {
+function Board({ xIsNext, squares, onPlay, startSquare, setStartSquare }) {
   function pieceCount(squares, player) {
     return squares.filter(s => s === player).length;
   }
 
   function handleClick(i) {
-    if (calculateWinner(squares) || squares[i]) {
+    if (calculateWinner(squares)) {
     return;
     }
     const player = xIsNext ? "X" : "O";
-    if (pieceCount(squares, player) >=3) {
-      return;
+    if (pieceCount(squares, player) < 3) {
+      if (squares[i]) {
+        return;
+      }
+      const nextSquares = squares.slice();
+      nextSquares[i] = player;
+      onPlay(nextSquares);
+    } else { 
+        if (startSquare === null) {
+          if (squares[i] === player) {
+            setStartSquare(i);
+          } else {
+            return;
+          }
+        } else {
+          if (squares[i] === null && Adjacent(startSquare, i)) {
+            const nextSquares = squares.slice();
+            nextSquares[i] = player;
+            nextSquares[startSquare] = null;
+            onPlay(nextSquares);
+          }
+          setStartSquare(null);
+        }
     }
-    const nextSquares = squares.slice();
-    nextSquares[i] = player;
-    onPlay(nextSquares);
+    
   }
 
   const winner = calculateWinner(squares);
@@ -40,19 +59,19 @@ function Board({ xIsNext, squares, onPlay }) {
     <>
       <div className="status">{status}</div>
       <div className="board-row">
-        <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-        <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
-        <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
+        <Square value={squares[0]} onSquareClick={() => handleClick(0)} isSelected={startSquare === 0} />
+        <Square value={squares[1]} onSquareClick={() => handleClick(1)} isSelected={startSquare === 1} />
+        <Square value={squares[2]} onSquareClick={() => handleClick(2)} isSelected={startSquare === 2} />
       </div>
       <div className="board-row">
-        <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
-        <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
-        <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
+        <Square value={squares[3]} onSquareClick={() => handleClick(3)} isSelected={startSquare === 3} />
+        <Square value={squares[4]} onSquareClick={() => handleClick(4)} isSelected={startSquare === 4} />
+        <Square value={squares[5]} onSquareClick={() => handleClick(5)} isSelected={startSquare === 5} />
       </div>
       <div className="board-row">
-        <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
-        <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
-        <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
+        <Square value={squares[6]} onSquareClick={() => handleClick(6)} isSelected={startSquare === 6} />
+        <Square value={squares[7]} onSquareClick={() => handleClick(7)} isSelected={startSquare === 7} />
+        <Square value={squares[8]} onSquareClick={() => handleClick(8)} isSelected={startSquare === 8} />
       </div>
     </>
   );
@@ -63,6 +82,7 @@ export default function Game() {
   const [currentMove, setCurrentMove] = useState(0);
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove]
+  const [startSquare, setStartSquare] = useState(null);
   
   function handlePlay(nextSquares) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
@@ -91,7 +111,7 @@ export default function Game() {
   return (
     <div className="game">
       <div className="game-board">
-        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} startSquare={startSquare} setStartSquare={setStartSquare} />
         </div>
       <div className="game-info">
         <ol>{moves}</ol>
@@ -118,4 +138,11 @@ function calculateWinner(squares) {
     }
   }
   return null;
+}
+
+const adjacentSquares = { 0: [1, 3, 4], 1: [0, 2, 3, 4, 5], 2: [1, 4, 5], 3: [0, 1, 4, 6, 7], 4: [0, 1, 2, 3, 5, 6, 7, 8], 5: [1, 2, 4, 7, 8], 6: [3, 4, 7], 7: [3, 4, 5, 6, 8], 8: [4, 5, 7] };
+
+function Adjacent(square1, square2) {
+  const adjacent = adjacentSquares[square1].find(x => x === square2);
+  return adjacent !== undefined;
 }
