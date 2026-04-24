@@ -16,4 +16,7 @@ Next, I began to implement X and O(before this, only X was rendered). To do so, 
 
 To actually check whether someone had won or not, I added a calculateWinner function(which essentially just checked whether any three squares in a line were the same value, X or O), and then added that result to the prior check at the beginning of handleClick(as the game must end early if a winner is found), and this worked as expected, where even if there were squares remaining, if a winner was found, no more squares were updated. Then, to display the winner, I added a status div that displayed either the winner and who it was, or who the next player is(in the case no winner was found yet).
 
-Then, I began implementing the time-travel function.
+Then, I began implementing the time-travel function, and to do so, I had to change the top-level from Board to a Game(new default), to track the board's past states. Before implementing the full feature, this change didn't affect anything from the user side(looked like the same one playable game of tic-tac-toe). Then, to actually track those past states, I added two variables(via useState so program could remember), tracking which player was next and the history, where the last array in history was the most current state of the board.
+
+To make sure the data from Game was passed into board, I created props for board and refactored the code to work for the props instead, and made the Game component deal wiht the main board-level state changes via handlePlay, as well as passed in all of the needed props for board from Game. After all of this, the all of the state data is moved into Game, but the actual program still looks the same on the user end(essentially just refactored the code, it functions the same).
+
